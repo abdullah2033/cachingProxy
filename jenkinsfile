@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                // Jenkins will automatically clone the repo for you using the Git plugin
+                echo 'Cloned repo automatically'
+            }
+        }
+
+        stage('Copy to local directory') {
+            steps {
+                script {
+                    def destination = "/var/www/node-app/"
+                    sh "mkdir -p ${destination}"
+                    sh "cp -r * ${destination}"
+                }
+            }
+        }
+    }
+}
