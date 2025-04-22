@@ -2,20 +2,30 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout Code') {
             steps {
-                // Jenkins will automatically clone the repo for you using the Git plugin
-                echo 'Cloned repo automatically'
+                checkout scm
             }
         }
 
-        stage('Copy to local directory') {
+        stage('Install Dependencies') {
             steps {
-                script {
-                    def destination = "/var/www/node-app/"
-                    sh "mkdir -p ${destination}"
-                    sh "cp -r * ${destination}"
-                }
+                bat 'npm install'
+            }
+        }
+
+        // stage('Run Tests') {
+        //     steps {
+        //         bat 'npm test'
+        //     }
+        // }
+
+        stage('Deploy') {
+            steps {
+                bat '''
+                mkdir D:\\projects\\deployed-app
+                xcopy * D:\\projects\\deployed-app /E /I /Y
+                '''
             }
         }
     }
